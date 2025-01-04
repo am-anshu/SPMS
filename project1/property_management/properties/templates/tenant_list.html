@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPMS</title>
+    {% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+
+</head>
+<body>
+    <nav>
+        <a href="{% url 'property_list' %}">Home</a>
+        <a href="{% url 'add_property' %}">Add Property</a>
+        <a href="{% url 'tenant_list' %}">Tenants</a>
+        <a href="{% url 'maintenance_list' %}">Maintenance</a>
+    </nav>
+    <h2>Tenant List</h2>
+<ul>
+    {% for tenant in tenants %}
+        <li>{{ tenant.name }} - {{ tenant.property.name }}</li>
+    {% endfor %}
+</ul>
+
+<footer>
+    <p>Smart Property Management System &copy; 2024</p>
+</footer>
+</body>
+</html>

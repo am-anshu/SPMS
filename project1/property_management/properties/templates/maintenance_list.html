@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maintenance Requests</title>
+    {% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <nav>
+        <a href="{% url 'property_list' %}">Home</a>
+        <a href="{% url 'add_property' %}">Add Property</a>
+        <a href="{% url 'tenant_list' %}">Tenants</a>
+        <a href="{% url 'maintenance_list' %}">Maintenance</a>
+    </nav>
+
+    <h2>Maintenance Requests</h2>
+
+    <!-- Maintenance Request List -->
+    <table>
+        <thead>
+            <tr>
+                <th>Property</th>
+                <th>Issue</th>
+                <th>Description</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for maintenance in maintenances %}
+            <tr>
+                <td>{{ maintenance.property.name }}</td>
+                <td>{{ maintenance.issue }}</td>
+                <td>{{ maintenance.description }}</td>
+                <td>
+                    {% if maintenance.is_resolved %}
+                        <span style="color: green;">Resolved</span>
+                    {% else %}
+                        <span style="color: red;">Pending</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Add Maintenance Request Form -->
+    <div class="add-maintenance">
+        <h3>Add Maintenance Request</h3>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Add Maintenance</button>
+        </form>
+    </div>
+
+</body>
+</html>

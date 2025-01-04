@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPMS</title>
+    {% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+<script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <nav>
+        <a href="{% url 'property_list' %}">Home</a>
+        <a href="{% url 'add_property' %}">Add Property</a>
+        <a href="{% url 'tenant_list' %}">Tenants</a>
+        <a href="{% url 'maintenance_list' %}">aintenance</a>
+    </nav>
+    <h2>Property List</h2>
+    <ul>
+        {% for property in properties %}
+        {% if not property.sold %}
+            <li>
+                <h3>{{ property.name }}</h3>
+                    <img src="{{ property.image.url }}" alt="{{ property.name }}" style="width:200px; height:auto; margin:10px 0;">
+                <p>Location: {{ property.location }}</p>
+                <p>Rent: {{ property.rent_price }}</p>
+                <p style="color: green;"><strong>For Sale:</strong> ${{ property.sale_price }}</p>
+                <button onclick="startCheckout('{{ property.id }}')">Buy with Stripe</button>
+            </li>
+        {% endif %}
+        {% endfor %}
+    </ul>
+    <script>
+        const stripe = Stripe("{{ stripe_publishable_key }}");
+
+        function startCheckout(propertyId) {
+            fetch(`/create-checkout-session/${propertyId}/`)
+                .then((response) => response.json())
+                .then((data) => {
+                    return stripe.redirectToCheckout({ sessionId: data.id });
+                })
+                .then((result) => {
+                    if (result.error) {
+                        alert(result.error.message);
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                });
+        }
+    </script>
+    
+<footer>
+    <p>Smart Property Management System &copy; 2024</p>
+</footer>
+</body>
+</html>
