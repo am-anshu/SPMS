@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load static %}
+    <!-- <title>SPMS</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}"> -->
+    <link rel="icon" type="image/x-icon" href="{% static 'favicon_io (1)\android-chrome-512x512.png' %}">
+    <title>Rent Prediction</title>
+</head>
+<body>
+    <h2>Predict Rent</h2>
+    <form method="POST" id="rentForm">
+        {% csrf_token %}
+        <label for="size">Size (sq. ft):</label>
+        <input type="number" id="size" name="size" step="0.1" required>
+
+        <label for="bedrooms">Bedrooms:</label>
+        <input type="number" id="bedrooms" name="bedrooms" required>
+
+        <label for="location">Location Code:</label>
+        <input type="number" id="location" name="location" required>
+
+        <button type="submit">Predict Rent</button>
+    </form>
+
+    <div id="result" style="margin-top: 20px;">
+        <!-- Prediction result will display here -->
+    </div>
+
+    <script>
+        const form = document.getElementById("rentForm");
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            const formData = new FormData(form);
+            const response = await fetch("", {
+                method: "POST",
+                body: formData,
+            });
+            const data = await response.json();
+            const resultDiv = document.getElementById("result");
+            if (data.predicted_rent) {
+                resultDiv.innerHTML = `<p>Predicted Rent: $${data.predicted_rent.toFixed(2)}</p>`;
+            } else {
+                resultDiv.innerHTML = `<p>Error: ${data.error}</p>`;
+            }
+        });
+    </script>
+</body>
+</html>

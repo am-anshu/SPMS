@@ -1,12 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
-    <title>SPMS</title>
-    {% load static %}
+    <title>{{ property.name }} - Details</title>
     <script src="https://js.stripe.com/v3/"></script>
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
     <link rel="icon" type="image/x-icon" href="{% static 'favicon_io (1)\android-chrome-512x512.png' %}">
-
 </head>
 <body>
     <nav>
@@ -15,22 +14,29 @@
         <a href="{% url 'tenant_list' %}">Tenants</a>
         <a href="{% url 'maintenance_list' %}">Maintenance</a>
     </nav>
-    <h2>Available Properties</h2>
-    <ul>
-        {% for property in properties %}
-        <li>
-            <h3>{{ property.name }}</h3>
-            <a href="{% url 'property_detail' property.id %}">
-                <img src="{{ property.image.url }}" alt="{{ property.name }}" style="width: 200px; height: auto;">
-            </a>
-            <p>Location: {{ property.location }}</p>
-            <p>Price: ${{ property.rent_price }}</p>
-        </li>
-        {% endfor %}
-    </ul>
-    <a href="{% url 'contact_page' %}">Contact Us </a>
-    <a href="{% url 'about_page' %}">About Us</a>
-    <!-- <script>
+    
+    <h1>{{ property.name }}</h1>
+    <img src="{{ property.image.url }}" alt="{{ property.name }}" style="width: 400px; height: auto;">
+    <p><strong>Location:</strong> {{ property.location }}</p>
+    <p><strong>Size:</strong> {{ property.size }} sq ft</p>
+    <p><strong>Bedrooms:</strong> {{ property.bedrooms }}</p>
+    <p><strong>Price:</strong> ${{ property.rent_price }}</p>
+    <p><strong>Description:</strong> {{ property.description }}</p>
+    <p>Status: 
+        {% if property.status == 'for_sale' %}
+            <span style="color: green;">For Sale</span>
+        {% else %}
+            <span style="color: red;">Sold</span>
+        {% endif %}
+    </p>
+    {% if property.status == 'for_sale' %}
+        <button onclick="startCheckout('{{ property.id }}')">Buy with Stripe</button>
+    {% endif %}
+
+    <a href="{% url 'property_list' %}">Back to Property List</a>
+    
+    
+    <script>
         const stripe = Stripe("{{ stripe_publishable_key }}");
 
         function startCheckout(propertyId) {
@@ -47,7 +53,7 @@
                     console.error("Error:", error);
                 });
         }
-    </script> -->
+    </script>
 <footer>
     <p>Smart Property Management System &copy; 2024</p>
 </footer>

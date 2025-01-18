@@ -1,0 +1,29 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Confirm Payment</title>
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <h2>Confirm Payment</h2>
+    <p>Property: {{ property.name }}</p>
+    <p>Price: ${{ property.rent_price }}</p>
+    <button id="pay-button">Pay Now</button>
+    <script>
+        var stripe = Stripe('{{ stripe_publishable_key }}');
+        var clientSecret = "{{ client_secret }}";
+
+        document.getElementById('pay-button').addEventListener('click', function() {
+            stripe.confirmCardPayment(clientSecret).then(function(result) {
+                if (result.error) {
+                    alert('Payment failed: ' + result.error.message);
+                } else {
+                    if (result.paymentIntent.status === 'succeeded') {
+                        window.location.href = "{% url 'payment_success' property.id %}";
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html> -->
