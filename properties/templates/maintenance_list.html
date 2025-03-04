@@ -1,0 +1,147 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maintenance Requests</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/res.css' %}">
+    <link rel="icon" type="image/x-icon" href="{% static 'favicon_io (1)\android-chrome-512x512.png' %}">
+   
+</head>
+<body>
+    <nav>
+        <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+        <div class="nav-links">
+            <a href="{% url 'property_list' %}">Home</a>
+            <a href="{% url 'add_property' %}">Add Property</a>
+            <a href="{% url 'tenant_list' %}">Tenants</a>
+            <a href="{% url 'maintenance_list' %}">Maintenance</a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'new_logout' %}">Logout</a>
+        {% else %}
+            <a href="{% url 'new_login' %}">Login</a>
+            <a href="{% url 'new_register' %}">Register</a>
+        {% endif %}
+        </div>
+    </nav>
+
+    <h2>Maintenance Requests</h2>
+
+    <!-- Maintenance Request List -->
+    <!-- <table>
+        <thead>
+            <tr>
+                <th>Property</th>
+                <th>Issue</th>
+                <th>Description</th>
+                <th>Status</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            {% for maintenance in maintenances %}
+            <tr>
+                <td>{{ maintenance.property.name }}</td>
+                <td>{{ maintenance.issue }}</td>
+                <td>{{ maintenance.description }}</td>
+                <td>
+                    {% if maintenance.is_resolved %}
+                        <span style="color: green;">Resolved</span>
+                    {% else %}
+                        <span style="color: red;">Pending</span>
+                    {% endif %}
+                </td>
+               
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table> -->
+    <!-- <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Issue</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for maintenance in maintenances %}
+                <tr>
+                    <td>{{ maintenance.property.name }}</td>
+                    <td>{{ maintenance.issue }}</td>
+                    <td>{{ maintenance.description }}</td>
+                    <td>
+                        {% if maintenance.is_resolved %}
+                            <span class="status resolved">Resolved</span>
+                        {% else %}
+                            <span class="status pending">Pending</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div> -->
+    <!-- <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Issue</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for maintenance in maintenances %}
+                <tr>
+                    <td>{{ maintenance.property.name }}</td>
+                    <td>{{ maintenance.issue }}</td>
+                    <td>{{ maintenance.description }}</td>
+                    <td>
+                        {% if maintenance.is_resolved %}
+                            <span class="status-resolved">Resolved</span>
+                        {% else %}
+                            <span class="status-pending">Pending</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div> -->
+    <ul>
+        {% for maintenance in maintenances %}
+            <li><br> <strong> Name :</strong> {{ maintenance.name }} 
+                <br> <strong>Property name :</strong>{{ maintenance.property.name }}
+                <br> <strong>Issue :</strong>{{ maintenance.issue }}
+                <br> <strong>Discription :</strong>{{ maintenance.description }}
+                </li>
+        {% endfor %}
+    </ul>
+    <!-- Add Maintenance Request Form -->
+    <div class="add-maintenance">
+        <h3>Add Maintenance Request</h3>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Add Maintenance</button>
+        </form>
+    </div>
+
+    <script>
+        
+        function toggleMenu() {
+            let menu = document.querySelector(".nav-links");
+            menu.style.display = (menu.style.display === "block") ? "none" : "block";
+        }
+    
+    
+        </script>
+</body>
+</html>

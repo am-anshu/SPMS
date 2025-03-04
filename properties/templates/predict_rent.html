@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load static %}
+    <!-- <title>SPMS</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}"> -->
+    <link rel="icon" type="image/x-icon" href="{% static 'favicon_io (1)\android-chrome-512x512.png' %}">
+    <title>SPMS</title>
+    <style>/* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        /* Body Styling */
+        body {
+            background: #f8f9fa;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            padding: 20px;
+        }
+        
+        /* Heading */
+        h2 {
+            color: #007bff;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        /* Form Styling */
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        
+        /* Form Labels */
+        form label {
+            display: block;
+            font-weight: bold;
+            margin-top: 10px;
+            text-align: left;
+        }
+        
+        /* Form Inputs */
+        form input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        
+        /* Submit Button */
+        form button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            margin-top: 20px;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+        }
+        
+        form button:hover {
+            background: #0056b3;
+        }
+        
+        /* Result Box */
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e9ecef;
+            border-radius: 5px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 500px) {
+            body {
+                padding: 10px;
+            }
+        
+            form {
+                width: 100%;
+                max-width: 100%;
+            }
+        
+            #result {
+                width: 100%;
+                max-width: 100%;
+            }
+        }
+        </style>
+</head>
+<body>
+    <h2>Predict Rent</h2>
+    <form method="POST" id="rentForm">
+        {% csrf_token %}
+        <label for="size">Size (sq. ft):</label>
+        <input type="number" id="size" name="size" step="0.1" required>
+
+        <label for="bedrooms">Bedrooms:</label>
+        <input type="number" id="bedrooms" name="bedrooms" required>
+
+        <label for="location">Location Code:</label>
+        <input type="number" id="location" name="location" required>
+
+        <button type="submit">Predict Rent</button>
+    </form>
+
+    <div id="result" style="margin-top: 20px;">
+        <!-- Prediction result will display here -->
+    </div>
+
+    <script>
+        const form = document.getElementById("rentForm");
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            const formData = new FormData(form);
+            const response = await fetch("", {
+                method: "POST",
+                body: formData,
+            });
+            const data = await response.json();
+            const resultDiv = document.getElementById("result");
+            if (data.predicted_rent) {
+                resultDiv.innerHTML = `<p>Predicted Rent: $${data.predicted_rent.toFixed(2)}</p>`;
+            } else {
+                resultDiv.innerHTML = `<p>Error: ${data.error}</p>`;
+            }
+        });
+    </script>
+</body>
+</html>

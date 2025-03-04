@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SPMS</title>
+    {% load static %}
+    <script src="https://js.stripe.com/v3/"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/res.css' %}">
+    <link rel="icon" type="image/x-icon" href="{% static 'favicon_io (1)\android-chrome-512x512.png' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <style>#alert-box {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 1000;
+}
+
+.alert {
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.alert-success { background: #28a745; } /* Green for success */
+.alert-error { background: #dc3545; } /* Red for error */
+.alert-info { background: #ec9004; } /* Blue for info */
+</style>
+</head>
+<body>
+    <nav>
+        <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+        <div class="nav-links">
+            <a href="{% url 'property_list' %}">Home</a>
+            <a href="{% url 'add_property' %}">Add Property</a>
+            <a href="{% url 'tenant_list' %}">Tenants</a>
+            <a href="{% url 'maintenance_list' %}">Maintenance</a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'new_logout' %}">Logout</a>
+        {% else %}
+            <a href="{% url 'new_login' %}">Login</a>
+            <a href="{% url 'new_register' %}">Register</a>
+        {% endif %}
+        </div>
+    </nav>
+    
+    <!-- <nav>
+        <a href="{% url 'property_list' %}">Home</a>
+        <a href="{% url 'add_property' %}">Add Property</a>
+        <a href="{% url 'tenant_list' %}">Tenants</a>
+        <a href="{% url 'maintenance_list' %}">Maintenance</a>
+        
+        {% if user.is_authenticated %}
+        <a href="{% url 'new_logout' %}">Logout</a>
+        {% else %}
+            <a href="{% url 'new_login' %}">Login</a>
+            <a href="{% url 'new_register' %}">Register</a>
+        {% endif %}
+        
+    </nav> -->
+    <h2>Available Properties</h2>
+    <ul>
+        {% for property in properties %}
+        <li>
+            <h3>{{ property.name }}</h3>
+            <a href="{% url 'property_detail' property.id %}">
+                <img src="{{ property.image.url }}" alt="{{ property.name }}" style="width: 200px; height: auto;">
+            </a>
+            <p>Location: {{ property.location }}</p>
+            <p><strong>Status: </strong>
+                {% if property.status == 'for_sale' %}
+                    <span style="color: green;">For Sale</span>
+                {% else %}
+                    <span style="color: red;">Sold</span>
+                {% endif %}
+            </p>
+        </li>
+        {% endfor %}
+    </ul>
+    <p>
+        <a href="{% url 'contact_page' %}" style="text-decoration: none;">Contact Us </a><br>
+        <a href="{% url 'about_page' %}"  style="text-decoration: none;">About Us</a>
+    </p>
+    <!-- {% if messages %}
+    <div class="alert-container">
+        {% for message in messages %}
+            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %} -->
+    {% if messages %}
+    <div id="alert-box">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <script>
+        
+    function toggleMenu() {
+        let menu = document.querySelector(".nav-links");
+        menu.style.display = (menu.style.display === "block") ? "none" : "block";
+    }
+
+
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let alerts = document.querySelectorAll(".alert");
+            alerts.forEach(alert => {
+                setTimeout(() => {
+                    alert.style.opacity = "0";
+                    setTimeout(() => alert.remove(), 500);
+                }, 3000);
+            });
+        });
+        </script>
+    <!-- <script>
+        const stripe = Stripe("{{ stripe_publishable_key }}");
+
+        function startCheckout(propertyId) {
+            fetch(`/create-checkout-session/${propertyId}/`)
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.error) {
+                        alert(data.error);
+                    } else {
+                        return stripe.redirectToCheckout({ sessionId: data.id });
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                });
+        }
+    </script> -->
+<footer>
+    
+    <p>Smart Property Management System &copy; 2024</p>
+        
+</footer>
+</body>
+</html>

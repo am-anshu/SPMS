@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <title>SPMS</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/res.css' %}">
+    <link rel="icon" type="image/x-icon" href="{% static 'favicon_io (1)\android-chrome-512x512.png' %}">
+</head>
+<body>
+    <nav>
+        <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+        <div class="nav-links">
+            <a href="{% url 'property_list' %}">Home</a>
+            <a href="{% url 'add_property' %}">Add Property</a>
+            <a href="{% url 'tenant_list' %}">Tenants</a>
+            <a href="{% url 'maintenance_list' %}">Maintenance</a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'new_logout' %}">Logout</a>
+        {% else %}
+            <a href="{% url 'new_login' %}">Login</a>
+            <a href="{% url 'new_register' %}">Register</a>
+        {% endif %}
+        </div>
+    </nav>
+    <h2>Add New Property</h2>
+    <div class="container">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <!-- <div>
+                <label for="is_for_sale">Is For Sale:</label>
+                {{ form.is_for_sale }}
+            </div>
+            <div>
+                <label for="sale_price">Sale Price (if applicable):</label>
+                {{ form.sale_price }}
+            </div> -->
+            <button type="submit">Add Property</button>
+          
+        </form>
+
+    </div>
+    <script>
+        
+        function toggleMenu() {
+            let menu = document.querySelector(".nav-links");
+            menu.style.display = (menu.style.display === "block") ? "none" : "block";
+        }
+    
+    
+        </script>
+    <footer>
+        <p>Smart Property Management System &copy; 2024</p>
+    </footer>
+</body>
+</html>

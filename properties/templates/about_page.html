@@ -1,0 +1,46 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us</title>
+    <link rel="stylesheet" href="{% static 'css/about.css' %}">
+    <link rel="icon" type="image/x-icon" href="{% static 'favicon_io (1)\android-chrome-512x512.png' %}">
+</head>
+<body>
+    <div class="about-container">
+        <header class="about-header">
+            <h1>About Us</h1>
+        </header>
+        <section class="about-content">
+            <p>
+                Welcome to <strong>Smart property Management System</strong>, where we believe in providing exceptional property management solutions. 
+                Our team is dedicated to simplifying the management process for property owners and tenants, 
+                offering reliable and innovative services.
+            </p>
+            <p>
+                With years of experience in the real estate industry, we understand the challenges that come with property management. 
+                That’s why we strive to offer tools and services that make the process efficient and hassle-free.
+            </p>
+            <h2>Our Mission</h2>
+            <p>
+                Our mission is to empower property owners and tenants with technology-driven solutions that provide transparency, 
+                convenience, and excellent service. We aim to build lasting relationships based on trust and reliability.
+            </p>
+            <h2>Our Values</h2>
+            <ul>
+                <li><strong>Innovation:</strong> Leveraging technology to offer the best solutions.</li>
+                <li><strong>Integrity:</strong> Maintaining honesty and trust in all interactions.</li>
+                <li><strong>Customer Focus:</strong> Delivering services that exceed expectations.</li>
+            </ul>
+            
+            <a href="{% url 'property_list' %}"  style="text-decoration: none;">Go back to Property list</a>
+        </section>
+        <footer class="about-footer">
+            <p>&copy; 2024 Your Company. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>

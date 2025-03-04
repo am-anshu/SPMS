@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPMS</title>
+    {% load static %}
+    <link rel="icon" type="image/x-icon" href="{% static 'favicon_io (1)\android-chrome-512x512.png' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/res.css' %}">
+
+</head>
+<body>
+    <nav>
+        <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+        <div class="nav-links">
+            <a href="{% url 'property_list' %}">Home</a>
+            <a href="{% url 'add_property' %}">Add Property</a>
+            <a href="{% url 'tenant_list' %}">Tenants</a>
+            <a href="{% url 'maintenance_list' %}">Maintenance</a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'new_logout' %}">Logout</a>
+        {% else %}
+            <a href="{% url 'new_login' %}">Login</a>
+            <a href="{% url 'new_register' %}">Register</a>
+        {% endif %}
+        </div>
+    </nav>
+    <h2>Tenant List</h2>
+<ul>
+    {% for tenant in tenants %}
+        <li><br> <strong>Tentor Name :</strong> {{ tenant.name }} 
+            <br> <strong>Property name :</strong>{{ tenant.property.name }} 
+            <br> <strong>Contact Number :</strong>{{ tenant.contact }}
+            <br> <strong>Move In Date :</strong>{{ tenant.move_in_date }}
+            </li>
+    {% endfor %}
+</ul>
+<script>
+        
+    function toggleMenu() {
+        let menu = document.querySelector(".nav-links");
+        menu.style.display = (menu.style.display === "block") ? "none" : "block";
+    }
+
+
+    </script>
+<footer>
+    <p>Smart Property Management System &copy; 2024</p>
+</footer>
+</body>
+</html>

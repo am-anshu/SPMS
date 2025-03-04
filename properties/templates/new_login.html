@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <!-- <link rel="stylesheet" href="{% static 'js/messages.js' %}"> -->
+</head>
+<body>
+    <h2>Login</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <label>Username:</label>
+        <input type="text" name="username" required>
+        <label>Password:</label>
+        <input type="password" name="password" required>
+        <button type="submit">Login</button>
+    </form>
+    <p>Don't have an account? <a href="{% url 'new_register' %}">Register here</a>.</p>
+    {% if messages %}
+    <div id="alert-box">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let alerts = document.querySelectorAll(".alert");
+            alerts.forEach(alert => {
+                setTimeout(() => {
+                    alert.style.opacity = "0";
+                    setTimeout(() => alert.remove(), 500);
+                }, 3000);
+            });
+        });
+        </script>
+        
+</body>
+</html>
